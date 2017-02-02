@@ -1,11 +1,11 @@
-EXENAME = q43
+EXENAME = ttt
 
 CXX = clang++
 CXXFLAGS = -std=c++0x -g -O0 -Wall -Wextra
 
 all : $(EXENAME)
 
-$(EXENAME): q43.cpp
+$(EXENAME): ttt.cpp
 	$(CXX) $(CXXFLAGS) q43.cpp -o $(EXENAME)
 
 .PHONY: clean
