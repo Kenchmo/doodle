@@ -21,7 +21,8 @@
 using namespace std;
 
 string logic_processor(vector<string> v){
-    for(string it:v) cout<<it<<endl;
+    //for(string it:v) cout<<it<<" ";
+    //cout<<endl;
     if(v.size() == 2){
         if(v[0] != "NOT") return "invalid";
         else{
@@ -33,7 +34,7 @@ string logic_processor(vector<string> v){
     }
     string expr = v[0] + " " + v[1] + " " + v[2];
     expr = expr.substr(expr.find_first_not_of(" "), expr.length());
-    cout<<"processing: "<<expr<<endl;
+    //cout<<"processing: "<<expr<<endl;
     
     if(expr == "T AND T") return "T";
     if(expr == "T AND F") return "F";
@@ -71,14 +72,13 @@ int main(){
     cout<<"Please Enter the input: "<<endl;
     getline(cin, input, '\n');
 
-    int j = 0;
+    //int j = 0;
     while(input.length() != 1){
-        cout<<"--------------------------------------------------\n";
-        cout<<"input processing brackets round "<<++j<<endl;
-        cout<<"input: "<<input<<endl;
+        //cout<<"--------------------------------------------------\n";
+        //cout<<"input processing brackets round "<<++j<<endl;
+        //cout<<"input: "<<input<<endl;
         size_t right = input.find_first_of(")");
         size_t left = input.find_last_of("(");
-        cout<<"left: "<<left<<", right: "<<right<<endl;
         if((left == string::npos && right != string::npos) ||
            (left != string::npos && right == string::npos)){
             cout<<"unbalanced bracket invalid input"<<endl;
@@ -86,17 +86,8 @@ int main(){
         }
         else if(left != string::npos && right != string::npos){
             expr = input.substr(left + 1, right - left - 1);
-            input.erase(left, right-left+1);
-            
-        //    cout<<"input after removing brackets: "<<input<<endl;
-            cout<<"get expr: "<<expr<<endl;
-            while(expr.find("NOT") != string::npos){
-                size_t i = expr.find("NOT");
-                if(expr[i+4] == 'T') expr[i+4] = 'F';
-                else if(expr[i+4] == 'F') expr[i+4] = 'T';
-                expr.erase(i,4);
-            }
-            cout<<"expr after removing NOT: "<<expr<<endl;
+            input.erase(left, right-left+1);           
+            //cout<<"get expr: "<<expr<<endl;
         }
         else{
             left = input.find_first_not_of(" ");
@@ -104,17 +95,23 @@ int main(){
             expr = input;
             input.erase(0);
         }
+
+        while(expr.find("NOT") != string::npos){
+            size_t i = expr.find("NOT");
+            if(expr[i+4] == 'T') expr[i+4] = 'F';
+            else if(expr[i+4] == 'F') expr[i+4] = 'T';
+            expr.erase(i,4);
+        }
+        //cout<<"expr after removing NOT: "<<expr<<endl;
         vector<string> v;
         istringstream buf(expr);
         for(string word; buf >> word; )
             v.push_back(word);
 
-        int i = 0;
         while(v.size() != 1){
-            cout<<"-------------------\n";
-            cout<<"inside round "<<i++<<endl;
+            //cout<<"******************\n";
             string result = logic_processor(v);
-            cout<<"result: "<<result<<endl;
+            //cout<<"result: "<<result<<endl;
             
             if(result == "invalid"){
                 cout<<"invalid input"<<endl;
@@ -127,7 +124,7 @@ int main(){
         if(left != string::npos) input.insert(left, " "+v[0]);
         else input = v[0];
         while(input[0] == ' ') input.erase(input.begin());
-        cout<<"input after this round: "<<input<<endl;
+        //cout<<"input after this round: "<<input<<endl;
     }
     cout<<"Result: "<<input<<endl;
     return 0;
